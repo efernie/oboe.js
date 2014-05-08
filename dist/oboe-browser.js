@@ -4,7 +4,7 @@
 // having a local undefined, window, Object etc allows slightly better minification:                    
 (function  (window, Object, Array, Error, JSON, undefined ) {
 
-   // v1.15.0-1-gbd91d2c
+   // v1.15.1-1-g5ce957c
 
 /*
 
