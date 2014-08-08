@@ -3,7 +3,7 @@
 
 module.exports = (function  () {
    
-   // v1.15.1-1-g5ce957c
+   // v1.15.1-2-ga1e5ca0
 
 /*
 
@@ -1044,7 +1044,11 @@ var httpTransport = functor(require('http-https'));
  *                      Only valid if method is POST or PUT.
  * @param {Object} [headers] the http request headers to send
  */
+<<<<<<< HEAD
 function streamingHttp(oboeBus, transport, method, contentSource, data, headers) {
+=======
+function streamingHttp(oboeBus, http, method, contentSource, data, headers) {
+>>>>>>> e582fb6756d444b56d36d60af732f6ae8098c810
    "use strict";
 
    /* receiving data after calling .abort on Node's http has been observed in the
@@ -1057,18 +1061,26 @@ function streamingHttp(oboeBus, transport, method, contentSource, data, headers)
       // use stream in flowing mode
       readableStream.on('data', function (chunk) {
 
+<<<<<<< HEAD
          // avoid reading the stream after aborting the request
          if( !aborted ) {
             oboeBus(STREAM_DATA).emit(chunk.toString());
          }
+=======
+         oboeBus(STREAM_DATA).emit( chunk.toString() );
+>>>>>>> e582fb6756d444b56d36d60af732f6ae8098c810
       });
 
       readableStream.on('end', function() {
 
+<<<<<<< HEAD
          // avoid reading the stream after aborting the request
          if( !aborted ) {
             oboeBus(STREAM_END).emit();
          }
+=======
+         oboeBus( STREAM_END ).emit();
+>>>>>>> e582fb6756d444b56d36d60af732f6ae8098c810
       });
    }
 
@@ -1086,17 +1098,29 @@ function streamingHttp(oboeBus, transport, method, contentSource, data, headers)
       });
    }
 
+<<<<<<< HEAD
    function openUrlAsStream( url ) {
 
       var parsedUrl = require('url').parse(url);
 
       return transport.request({
+=======
+   function fetchHttpUrl( url ) {
+      if( !contentSource.match(/http:\/\//) ) {
+         contentSource = 'http://' + contentSource;
+      }
+
+      var parsedUrl = require('url').parse(contentSource);
+
+      var req = http.request({
+>>>>>>> e582fb6756d444b56d36d60af732f6ae8098c810
          hostname: parsedUrl.hostname,
          port: parsedUrl.port,
          path: parsedUrl.path,
          method: method,
          headers: headers
       });
+<<<<<<< HEAD
    }
 
    function fetchUrl() {
@@ -1119,6 +1143,16 @@ function streamingHttp(oboeBus, transport, method, contentSource, data, headers)
          oboeBus(HTTP_START).emit( res.statusCode, res.headers);
 
          if( successful ) {
+=======
+
+      req.on('response', function(res){
+         var statusCode = res.statusCode,
+             sucessful = String(statusCode)[0] == 2;
+
+         oboeBus(HTTP_START).emit( res.statusCode, res.headers);
+
+         if( sucessful ) {
+>>>>>>> e582fb6756d444b56d36d60af732f6ae8098c810
 
             readStreamToEventBus(res)
 
@@ -1138,7 +1172,10 @@ function streamingHttp(oboeBus, transport, method, contentSource, data, headers)
       });
 
       oboeBus(ABORTING).on( function(){
+<<<<<<< HEAD
          aborted = true;
+=======
+>>>>>>> e582fb6756d444b56d36d60af732f6ae8098c810
          req.abort();
       });
 
